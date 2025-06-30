@@ -1,0 +1,69 @@
+# ────────────────────────────────────────────────────────
+# configs/tts_replay.yaml
+# ────────────────────────────────────────────────────────
+
+stage: TTS
+seed: 1126
+run_name: TTS-stage_replay
+
+model_id: meta-llama/Llama-3.2-11B-Vision-Instruct
+model_save_path: ../model_ckpt
+load_peft_from: ../model_ckpt/ASR-stage_replay       # first stage → none
+num_units: 10000
+reg_lambda: 0.0   # Disable L2 Regularization
+num_proc: 100
+
+dataset:
+  name: chiyuanhsiao/ls960_interleaves
+  split: train  
+  label: transcription
+  ranks: null
+  chunks: null
+  filter_categories: null
+
+replay:
+  enabled: True
+  olds:
+    - stage: LLM
+      ratio: 0.05
+      dataset:
+        name: Magpie-Align/Llama-3-Magpie-Air-3M-v0.1
+        split: train
+        label: input
+    - stage: ASR
+      ratio: 0.05
+      dataset:
+        name: chiyuanhsiao/ls960_interleaves
+        split: train
+        label: transcription
+
+eval:
+  num_samples: 10
+  max_new_tokens: 256
+
+
+train:
+  report_to: wandb
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  bf16: True
+  learning_rate: 0.00005
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  gradient_accumulation_steps: 6
+  eval_strategy: steps
+  eval_steps: 1000
+  num_train_epochs: 5
+  group_by_length: True
+  max_seq_length: 1200
+  max_grad_norm: 1.0
+  logging_strategy: steps
+  logging_steps: 1
+  save_strategy: epoch
+  disable_tqdm: False
+  dataset_text_field: text
+
+wandb:
+  project: Speech Language Model
+  log_model: false
+  

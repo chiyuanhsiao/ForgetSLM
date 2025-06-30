@@ -1,0 +1,15 @@
+models:
+  - model: YOUR_MODEL_CKPT/BASE_LLM
+    parameters:
+      weight: 0.02
+  - model: YOUR_MODEL_CKPT/SQA_STAGE
+    parameters:
+      weight: 0.90
+  - model: YOUR_MODEL_CKPT/TTS_STAGE
+    parameters:
+      weight: 0.05
+  - model: YOUR_MODEL_CKPT/ASR_STAGE
+    parameters:
+      weight: 0.03
+merge_method: linear
+dtype: float16

@@ -1,0 +1,87 @@
+# ────────────────────────────────────────────────────────
+# configs/asr.yaml
+# ────────────────────────────────────────────────────────
+
+stage: ASR
+seed: 1126
+run_name: ASR-stage
+
+model_id: meta-llama/Llama-3.2-11B-Vision-Instruct
+model_save_path: ../model_ckpt
+load_peft_from: null           # first stage → none
+num_units: 10000
+reg_lambda: 0.0   # Disable L2 Regularization
+num_proc: 100
+
+lora:
+  r: 64
+  alpha: 16
+  dropout: 0.1
+  target_modules: ["q_proj", "k_proj", "v_proj"]
+  modules_to_save: 
+    - embed_tokens
+    - lm_head
+    - 39.self_attn.q_proj.base_layer
+    - 39.self_attn.k_proj.base_layer
+    - 39.self_attn.v_proj.base_layer
+    - 37.self_attn.q_proj.base_layer
+    - 37.self_attn.k_proj.base_layer
+    - 37.self_attn.v_proj.base_layer
+    - 36.self_attn.q_proj.base_layer
+    - 36.self_attn.k_proj.base_layer
+    - 36.self_attn.v_proj.base_layer
+    - 35.self_attn.q_proj.base_layer
+    - 35.self_attn.k_proj.base_layer
+    - 35.self_attn.v_proj.base_layer
+    - 34.self_attn.q_proj.base_layer
+    - 34.self_attn.k_proj.base_layer
+    - 34.self_attn.v_proj.base_layer
+
+dataset:
+  name: chiyuanhsiao/ls960_interleaves
+  split: train  
+  label: transcription
+  ranks: null
+  chunks: null
+  filter_categories: null
+
+replay:
+  enabled: True
+  olds:
+    - stage: LLM
+      ratio: 0.05
+      dataset:
+        name: Magpie-Align/Llama-3-Magpie-Air-3M-v0.1
+        split: train
+        label: input
+
+eval:
+  num_samples: 10
+  max_new_tokens: 256
+
+
+train:
+  report_to: wandb
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  bf16: True
+  learning_rate: 0.00005
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  gradient_accumulation_steps: 6
+  eval_strategy: steps
+  eval_steps: 1000
+  num_train_epochs: 5
+  group_by_length: True
+  max_seq_length: 1200
+  max_grad_norm: 1.0
+  logging_strategy: steps
+  logging_steps: 1
+  save_strategy: epoch
+  disable_tqdm: False
+  dataset_text_field: text
+
+wandb:
+  project: Speech Language Model
+  log_model: false
+  

@@ -1,0 +1,37 @@
+seed: 1126
+device: "cuda"         # or "cpu"
+
+model:
+  base_id:  meta-llama/Llama-3.2-11B-Vision-Instruct
+  peft_ckpt: ../model_ckpt/SQA-stage/final_model
+  tokenizer: ../model_ckpt/SQA-stage/final_tokenizer
+  num_units: 10000
+  fp: float16
+
+datasets:
+  - name: fixie-ai/spoken-web-questions
+    split: test
+    audio_col: audio
+    format: SQA_AUDIO
+  - name: fixie-ai/trivia_qa-audio
+    split: validation
+    audio_col: question_audio
+    format: SQA_AUDIO
+  - name: fixie-ai/llama-questions
+    split: test
+    audio_col: audio
+    format: SQA_AUDIO
+
+output_repo_prefix: YOUR_HF_ACCOUNT/inference_slm
+push_token: "hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+generation:
+  max_new_tokens: 2000
+  do_sample: true
+  batch_size: 20
+
+u2s:
+  enabled: true
+  vocoder: vocoder_v2         # seamlessM4T vocoder name
+  fp: float32
+

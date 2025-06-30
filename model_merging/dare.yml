@@ -1,0 +1,20 @@
+models:
+  - model: YOUR_MODEL_CKPT/BASE_LLM
+  - model: YOUR_MODEL_CKPT/SQA_STAGE
+    parameters:
+      density: 0.91
+      weight: 0.9
+  - model: YOUR_MODEL_CKPT/ASR_STAGE
+    parameters:
+      density: 0.91
+      weight: 0.04
+  - model: YOUR_MODEL_CKPT/TTS_STAGE
+    parameters:
+      density: 0.91
+      weight: 0.06
+merge_method: dare_ties
+base_model: YOUR_MODEL_CKPT/BASE_LLM
+parameters:
+  normalize: true
+dtype: float16
+
