@@ -2,15 +2,10 @@
 Chi-Yuan Hsiao · Ke-Han Lu · Kai-Wei Chang · Chih-Kai Yang · Wei-Chih Chen · Hung-yi Lee  
 [[arXiv 2505.17496](https://arxiv.org/abs/2505.17496)]
 
-This repository contains **all code, configs, and model-merging recipes** used in the paper:
+This repository contains **all code, and configs** used in the paper:
 
-* Three-stage Continual Fine-tuning: ASR → TTS → SQA,  
-* Mitigation Strategies: **Model Merging**, **Discounting LoRA-scaling Factor**, **Experience Replay**,  
-* Optional **DDP** / **Accelerate**,  
-* Inference Pipeline with **unit extraction + vocoder** for Speech Generation,  
-* Evaluation Scripts (Llama Questions, Spoken Web Questions, Audio-Trivia-QA),  
-* MergeKit Recipes for Checkpoint Fusion (**Dare**, **TIES**, **Linear**).
-
+## Abstract
+End-to-end training of Spoken Language Models (SLMs) commonly involves adapting pre-trained text-based Large Language Models (LLMs) to the speech modality through multi-stage training on diverse tasks such as ASR, TTS and spoken question answering (SQA). Although this multi-stage continual learning equips LLMs with both speech understanding and generation capabilities, the substantial differences in task and data distributions across stages can lead to catastrophic forgetting, where previously acquired knowledge is lost. This paper investigates catastrophic forgetting and evaluates three mitigation strategies—model merging, discounting the LoRA scaling factor, and experience replay to balance knowledge retention with new learning. Results show that experience replay is the most effective, with further gains achieved by combining it with other methods. These findings provide insights for developing more robust and efficient SLM training pipelines.
 
 ## Environment
 
@@ -37,6 +32,10 @@ conda activate ./slm_env
 
 ```bash
 cd train
+
+export WANDB_API_KEY=XXXXXXXXXXXXXXXXXXXXXXX        # Weights & Biases
+export HF_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXX        # Hugging Face Hub
+
 python train_slm.py --config configs/sqa.yaml
 ```
 
@@ -52,10 +51,16 @@ All intermediate checkpoints are saved to `model_ckpt/<RUN_NAME>`.
 
 ```bash
 # DDP via torchrun
+cd train
+WANDB_API_KEY=XXXXXXXXXXXXXXXXXXXXXXX \
+HF_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXX \
 torchrun --standalone --nproc_per_node 4 \
   train_slm.py --config configs/sqa.yaml
 
 # Accelerate
+cd train
+WANDB_API_KEY=XXXXXXXXXXXXXXXXXXXXXXX \
+HF_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXX \
 accelerate launch --num_processes 4 train_slm.py --config configs/sqa.yaml
 ```
 
