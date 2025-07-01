@@ -2,7 +2,7 @@
 Chi-Yuan Hsiao · Ke-Han Lu · Kai-Wei Chang · Chih-Kai Yang · Wei-Chih Chen · Hung-yi Lee  
 [[arXiv 2505.17496](https://arxiv.org/abs/2505.17496)]
 
-This repository contains **all code, and configs** used in the paper:
+This repository contains **all code, configs, and datasets** used in the paper:
 
 ## Abstract
 End-to-end training of Spoken Language Models (SLMs) commonly involves adapting pre-trained text-based Large Language Models (LLMs) to the speech modality through multi-stage training on diverse tasks such as ASR, TTS and spoken question answering (SQA). Although this multi-stage continual learning equips LLMs with both speech understanding and generation capabilities, the substantial differences in task and data distributions across stages can lead to catastrophic forgetting, where previously acquired knowledge is lost. This paper investigates catastrophic forgetting and evaluates three mitigation strategies—model merging, discounting the LoRA scaling factor, and experience replay to balance knowledge retention with new learning. Results show that experience replay is the most effective, with further gains achieved by combining it with other methods. These findings provide insights for developing more robust and efficient SLM training pipelines.
@@ -102,6 +102,10 @@ Adjust:
 * `u2s.enabled: false` if you only need text.
 * `generation.batch_size` for VRAM constraints.
 
+## Dataset
+The datasets used for training SLMs in multiple stages:
+* **ASR / TTS Stage:** [LibriSpeech Interleaving](https://huggingface.co/chiyuanhsiao/datasets?search=ls960_interleaves)
+* **SQA Stage:** [Magpie Speech](https://huggingface.co/chiyuanhsiao/datasets?search=magpie_rank)
 
 ## Citation
 
