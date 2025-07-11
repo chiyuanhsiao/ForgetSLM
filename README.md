@@ -1,8 +1,13 @@
 # Analyzing Mitigation Strategies for Catastrophic Forgetting in End-to-End Training of Spoken Language Models  
-Chi-Yuan Hsiao · Ke-Han Lu · Kai-Wei Chang · Chih-Kai Yang · Wei-Chih Chen · Hung-yi Lee  
-[[arXiv 2505.17496](https://arxiv.org/abs/2505.17496)]
+**Authors: Chi-Yuan Hsiao · Ke-Han Lu · Kai-Wei Chang · Chih-Kai Yang · Wei-Chih Chen · Hung-yi Lee**
 
-This repository contains **all code, configs, and datasets** used in the paper:
+[![arXiv](https://img.shields.io/badge/arXiv-2505.17496-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2505.17496)
+[![License](https://img.shields.io/badge/License-Apache_2.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+[![code](https://img.shields.io/badge/Github-Code-keygen.svg?logo=github)](https://github.com/chiyuanhsiao/ForgetSLM)
+[![model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging_Face-Model-blue.svg)](https://huggingface.co/chiyuanhsiao/models?search=forgetslm)
+[![dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging_Face-Dataset-yellow.svg)](https://huggingface.co/chiyuanhsiao/datasets?search=ls960_interleaves)
+
+This repository contains **all code, configs, and datasets** used in the paper
 
 ## Abstract
 End-to-end training of Spoken Language Models (SLMs) commonly involves adapting pre-trained text-based Large Language Models (LLMs) to the speech modality through multi-stage training on diverse tasks such as ASR, TTS and spoken question answering (SQA). Although this multi-stage continual learning equips LLMs with both speech understanding and generation capabilities, the substantial differences in task and data distributions across stages can lead to catastrophic forgetting, where previously acquired knowledge is lost. This paper investigates catastrophic forgetting and evaluates three mitigation strategies—model merging, discounting the LoRA scaling factor, and experience replay to balance knowledge retention with new learning. Results show that experience replay is the most effective, with further gains achieved by combining it with other methods. These findings provide insights for developing more robust and efficient SLM training pipelines.
